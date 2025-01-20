@@ -5,48 +5,33 @@ const linksImg2 = document.querySelectorAll(".transition-link-img2");
 const linksImg3 = document.querySelectorAll(".transition-link-img3");
 const linksImg4 = document.querySelectorAll(".transition-link-img4");
 
-// Function to show the transition block
-function showTransition() {
-  transitionBlock.classList.remove("hide");
-  transitionBlock.classList.add("show");
-}
+    // Show the transition block on page load
+    window.addEventListener("DOMContentLoaded", () => {
+      setTimeout(() => {
+        transitionBlock.classList.add("hide"); // Slide up to reveal content
+      }, 800); // Wait for a slight delay
+    });
 
-// Function to hide the transition block
-function hideTransition() {
-  setTimeout(() => {
-    transitionBlock.classList.add("hide"); // Slide up to reveal content
-    transitionBlock.classList.remove("show");
-  }, 500); // Wait for a slight delay
-}
+    // Handle link clicks
+    links.forEach(link => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault(); // Prevent immediate navigation
+        const targetUrl = e.target.href;
 
-// Show the transition block on page load
-window.addEventListener("DOMContentLoaded", () => {
-  hideTransition();
-});
+        // Add the show class to block and navigate after transition
+        transitionBlock.classList.remove("hide");
+        transitionBlock.classList.add("show");
 
-// Handle link clicks
-links.forEach(link => {
-  link.addEventListener("click", (e) => {
-    e.preventDefault(); // Prevent immediate navigation
-    const targetUrl = e.target.href;
+        setTimeout(() => {
+          window.location.href = targetUrl;
+        }, 800); // Match the CSS transition duration
+      });
+    });
 
-    showTransition();
-
-    setTimeout(() => {
-      window.location.href = targetUrl;
-    }, 500); // Match the CSS transition duration
-  });
-});
-
-// Handle browser back/forward navigation
-window.addEventListener("popstate", () => {
-  showTransition();
-
-  // Ensure the content is hidden before loading the new page
-  setTimeout(() => {
-    hideTransition();
-  }, 500); // Match the CSS transition duration
-});
+    // Refresh the page on back/forward navigation
+    window.addEventListener("popstate", () => {
+      location.reload(); // Reload the page when navigating through history
+    });
 
 // Handle link clicks for Atom2Atom
 linksImg1.forEach(link => {
